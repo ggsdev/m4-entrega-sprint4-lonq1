@@ -1,10 +1,10 @@
-import "reflect-metadata"
-import express from "express"
+import "reflect-metadata";
+import express from "express";
+import { commonRoutes, usersRoutes } from "./routes";
 
+const app = express();
+app.use(express.json());
 
-
-const app = express()
-app.use(express.json())
-
-
-export default app
+app.use("/users", usersRoutes);
+app.use("/login", commonRoutes);
+export default app;
