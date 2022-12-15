@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 import AppDataSource from "../data-source";
 import { User } from "../entities/users";
+import { AppError } from "../errorGlobal/AppError";
 export async function verifyIfAdminMiddleware(
     request: Request,
     response: Response,
@@ -9,16 +10,14 @@ export async function verifyIfAdminMiddleware(
 ) {
     const authToken = request.headers.authorization;
     if (!authToken) {
-        return response.status(401).json({
-            message: "Missing authorization headers",
-        });
+        throw new AppError(401, "Missing authorization headers");
     }
 
     const token = authToken.split(" ")[1];
 
     verify(token, process.env.SECRET_KEY + "", (error, decode) => {
         if (error) {
-            return response.status(401).json({ message: "Invalid token" });
+            throw new AppError(401, "Invalid token");
         }
 
         request.id = decode?.sub;
@@ -32,9 +31,7 @@ export async function verifyIfAdminMiddleware(
         statusCode = 401;
     }
     if (!user?.isAdm) {
-        return response
-            .status(statusCode)
-            .json({ message: "Missing admin permissions." });
+        throw new AppError(statusCode, "Missing admin permissions.");
     }
     return next();
 }

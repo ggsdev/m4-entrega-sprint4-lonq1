@@ -5,7 +5,7 @@ interface IUserRequest {
     isAdm: boolean;
 }
 
-interface IUser {
+interface IUserResponse {
     id: string;
     name: string;
     email: string;
@@ -14,10 +14,14 @@ interface IUser {
     updatedAt: Date;
 }
 
-interface ICreateUserResponse {
-    data?: IUser;
-    message?: string;
-    statusCode: number;
+interface IUserWithPasswordResponse {
+    id: string;
+    name: string;
+    email: string;
+    isAdm: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    password: string;
 }
 
 interface IUserLogin {
@@ -31,6 +35,16 @@ interface IUserUpdate {
     password?: string;
 }
 
+interface IUserUpdateResponse {
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+    isAdm: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
 interface IUserLoginResponse {
     statusCode: number;
     token?: string;
@@ -38,10 +52,11 @@ interface IUserLoginResponse {
 }
 
 export {
-    IUser,
+    IUserResponse,
     IUserLogin,
     IUserLoginResponse,
     IUserRequest,
     IUserUpdate,
-    ICreateUserResponse,
+    IUserUpdateResponse,
+    IUserWithPasswordResponse,
 };

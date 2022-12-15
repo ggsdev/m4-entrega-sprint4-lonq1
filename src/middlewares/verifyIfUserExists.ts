@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import AppDataSource from "../data-source";
 import { User } from "../entities/users";
+import { AppError } from "../errorGlobal/AppError";
 
 export async function verifyIfUserExistsMiddleware(
     request: Request,
@@ -13,7 +14,7 @@ export async function verifyIfUserExistsMiddleware(
     });
 
     if (!user) {
-        return response.status(404).json({ message: "User not found." });
+        throw new AppError(404, "User not found.");
     }
 
     return next();

@@ -1,25 +1,26 @@
 import { compareSync } from "bcryptjs";
 import AppDataSource from "../data-source";
 import { User } from "../entities/users";
-import { IUserLogin, IUserLoginResponse } from "../interfaces/users";
+import { IUserLogin } from "../interfaces/users";
 import jwt from "jsonwebtoken";
+import { AppError } from "../errorGlobal/AppError";
 
 export async function loginService({
     email,
     password,
-}: IUserLogin): Promise<IUserLoginResponse> {
+}: IUserLogin): Promise<string> {
     const userRepo = AppDataSource.getRepository(User);
     const user = await userRepo.findOneBy({
         email,
     });
 
     if (!user) {
-        return { statusCode: 403, message: "Invalid e-mail or password" };
+        throw new AppError(403, "Invalid e-mail or password");
     }
 
     const verifyPassword = compareSync(password, user.password);
     if (!verifyPassword) {
-        return { statusCode: 403, message: "Invalid e-mail or password" };
+        throw new AppError(403, "Invalid e-mail or password");
     }
 
     const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY + "", {
@@ -27,5 +28,5 @@ export async function loginService({
         subject: user.id,
     });
 
-    return { statusCode: 200, token };
+    return token;
 }
