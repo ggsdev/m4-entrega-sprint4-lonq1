@@ -1,11 +1,12 @@
 import AppDataSource from "../data-source";
 import { User } from "../entities/users";
+import { AppError } from "../errorGlobal/AppError";
 
 export async function deleteUserService(id: string) {
     const userRepo = AppDataSource.getRepository(User);
     const user = await userRepo.findOneBy({ id });
     if (!user?.isActive) {
-        return { statusCode: 400, message: "User is inactive already." };
+        throw new AppError(400, "User is inactive already.");
     }
     await userRepo.softDelete({ id });
     user.isActive = false;
@@ -13,3 +14,4 @@ export async function deleteUserService(id: string) {
 
     return { statusCode: 204, message: {} };
 }
+

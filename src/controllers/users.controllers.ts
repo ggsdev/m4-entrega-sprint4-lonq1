@@ -8,8 +8,8 @@ export async function createUserController(
     request: Request,
     response: Response
 ) {
-    const { statusCode, data, message } = await createUserService(request.body);
-    return response.status(statusCode).json(data || { message });
+    const data = await createUserService(request.body);
+    return response.status(201).json(data);
 }
 
 export async function getAllUsersController(
@@ -24,17 +24,14 @@ export async function deleteUserController(
     request: Request,
     response: Response
 ) {
-    const { statusCode, message } = await deleteUserService(request.params.id);
-    return response.status(statusCode).json({ message });
+    await deleteUserService(request.params.id);
+    return response.status(204).json({});
 }
 
 export async function updateUserController(
     request: Request,
     response: Response
 ) {
-    const { statusCode, data } = await updateUserService(
-        request.body,
-        request.params.id
-    );
-    return response.status(statusCode).json(data);
+    const data = await updateUserService(request.body, request.params.id);
+    return response.status(200).json(data);
 }
