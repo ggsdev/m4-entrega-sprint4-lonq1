@@ -8,6 +8,10 @@ export async function deleteUserService(id: string) {
     if (!user?.isActive) {
         throw new AppError(400, "User is inactive already.");
     }
+    await userRepo.softDelete({ id });
+    user.isActive = false;
+    await userRepo.save(user);
 
-    await userRepo.save({ id, isActive: false });
+    return { statusCode: 204, message: {} };
 }
+
