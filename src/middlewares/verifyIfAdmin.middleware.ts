@@ -30,7 +30,7 @@ export async function verifyIfAdminMiddleware(
     if (request.method === "PATCH") {
         statusCode = 401;
     }
-    if (!user?.isAdm) {
+    if (!user.isAdm) {
         throw new AppError(statusCode, "Missing admin permissions.");
     }
     return next();

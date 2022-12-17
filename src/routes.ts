@@ -1,14 +1,16 @@
 import { Router } from "express";
-import { loginController } from "./controllers/login.controller";
 import {
     createUserController,
-    deleteUserController,
     getAllUsersController,
     updateUserController,
-} from "./controllers/users.controllers";
-import { validSerializerMiddleware } from "./middlewares/validSerializer.middleware";
-import { verifyIfAdminMiddleware } from "./middlewares/verifyIfAdmin.middleware";
-import { verifyIfUserExistsMiddleware } from "./middlewares/verifyIfUserExists";
+    deleteUserController,
+    loginController,
+} from "./controllers/imports";
+import {
+    validSerializerMiddleware,
+    verifyIfAdminMiddleware,
+    verifyIfUserExistsMiddleware,
+} from "./middlewares/imports";
 import { loginSerializer } from "./serializers/login.serializer";
 import {
     createUserSerializer,

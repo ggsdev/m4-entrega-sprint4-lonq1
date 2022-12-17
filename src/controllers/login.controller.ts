@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { loginService } from "../services/login.service";
+import { loginService } from "../services/imports";
 
 export async function loginController(request: Request, response: Response) {
     const token = await loginService(request.body);

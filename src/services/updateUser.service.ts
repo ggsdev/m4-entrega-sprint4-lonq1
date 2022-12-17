@@ -8,20 +8,26 @@ export async function updateUserService(
     payload: IUserUpdate,
     id: string
 ): Promise<IUserUpdateResponse | null> {
-    const { email, name, password } = payload;
+    const { email } = payload;
 
     const userRepo = AppDataSource.getRepository(User);
-    const user = await userRepo.findOneBy({ id });
     const checkEmail = await userRepo.findOneBy({ email });
 
     if (checkEmail) {
         throw new AppError(401, "Can't update to this email.");
     }
 
-    if (user && email) user.email = email;
-    if (user && password) user.password = hashSync(password, 10);
-    if (user && name) user.name = name;
+    const user = await userRepo.findOneBy({ id });
 
-    user && (await userRepo.save(user));
-    return user;
+    const updatedUser = {
+        ...user,
+        ...payload,
+    };
+
+    if (payload.password) updatedUser.password = hashSync(payload.password, 10);
+
+    const { password, ...userWithoutPassword } = updatedUser;
+
+    await userRepo.save(updatedUser);
+    return userWithoutPassword;
 }
