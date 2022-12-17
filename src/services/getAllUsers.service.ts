@@ -4,7 +4,6 @@ import { IUserResponse } from "../interfaces/users";
 
 export async function getAllUsersService(): Promise<IUserResponse[]> {
     const userRepo = AppDataSource.getRepository(User);
-    const data = await userRepo.find();
-    const usersWithoutPassword = data.map(({ password, ...user }) => user);
-    return usersWithoutPassword;
+    const allUsers = await userRepo.find();
+    return allUsers.map(({ password, ...user }) => user);
 }

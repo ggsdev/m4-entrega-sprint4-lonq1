@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
-import { createUserService } from "../services/createUser.service";
-import { deleteUserService } from "../services/deleteUser.service";
-import { getAllUsersService } from "../services/getAllUsers.service";
-import { updateUserService } from "../services/updateUser.service";
+import {
+    createUserService,
+    deleteUserService,
+    getAllUsersService,
+    updateUserService,
+} from "../services/imports";
 
 export async function createUserController(
     request: Request,
